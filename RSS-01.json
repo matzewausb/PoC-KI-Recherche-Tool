@@ -1,0 +1,217 @@
+{
+  "name": "RSS-01",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=welche Förderprojekt sind verfügbar zum Thema {{ $json.Recherchebegriff }} ? \nErstelle mir eine Zusammenfassung der Förderprojekte zu diesem Themenfeld Im Sheet sind Förderprojekte dazu aufgeführt. Erstelle mir eine übersichtliche Zusammenfassung in einem lesbaren html Format. Verwende je Förderprojekt einen Abschnitt. Strukturiere die Ausgabe für ein einfaches Lesen!\nSende mir diese Zusammenfassung per Mail an meine Adresse matzewausb@gmail zu!\"",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        144,
+        -160
+      ],
+      "id": "ea0642c9-6554-4c41-b03d-16426735aa83",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "magistral-small-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        32
+      ],
+      "id": "ac8a3fd0-ba62-4c6a-8006-c3e4b3a9b5e9",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "YSxnyT1ZScobtboD",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Qz8BX_mwNeXcOYXvbZNNZRswFgpdWAx_NHC889u-VoA",
+          "mode": "list",
+          "cachedResultName": "RSS-F-Projekt",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Qz8BX_mwNeXcOYXvbZNNZRswFgpdWAx_NHC889u-VoA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "RSS-F-Projekte",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Qz8BX_mwNeXcOYXvbZNNZRswFgpdWAx_NHC889u-VoA/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        144,
+        48
+      ],
+      "id": "14e8007e-431e-4032-a9ce-69600c5b7232",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xAocnzaPqnShbSvM",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "81l93hhmpujdq6j1nee30228vs@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Matzewausb"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        48
+      ],
+      "id": "24f97b6b-4aba-492d-ba31-af24c80ea81a",
+      "name": "Get availability in a calendar in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Srf7A4uCc2cHC6TK",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "matzewausb@gmail.com",
+        "subject": "Info vom KI-Agenten RSS",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        -256
+      ],
+      "id": "dc995222-f3d7-44fc-aa40-6c4133fc5918",
+      "name": "Send a message",
+      "webhookId": "f7a64f94-b529-4056-a5e7-325fe3b8f86d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "m88knbyAOUIwglb1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Recherchebegriff",
+        "formDescription": "nach welchem Begriff sollrecherchiert werden? ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Recherchebegriff"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -96,
+        -192
+      ],
+      "id": "278d4623-ed7d-4b4f-a92a-6f04a73d72a3",
+      "name": "On form submission",
+      "webhookId": "54c6becf-ae12-4e4f-a78c-78b14ba75e8a"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get availability in a calendar in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "031ec42e-0d74-4324-82e6-4f91e9c0dc3c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "af4d9a79fed7d464e6cf8f923e73d4ca13999fb32448e07914990656270c60af"
+  },
+  "nodeGroups": [],
+  "id": "Mm5EOJyAQvwmNDLX",
+  "tags": []
+}
