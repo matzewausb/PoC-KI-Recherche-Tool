@@ -1,0 +1,271 @@
+{
+  "name": "RSS-02_News",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -64
+      ],
+      "id": "3dcd2204-8030-4504-a2ef-b326963330d1",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://www.foerderdatenbank.de/FDB/DE/Service/RSS/Functions/foerderprogram_rssnewsfeed.xml",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        -304
+      ],
+      "id": "44895593-8ace-49fa-9093-0035c8a51ae3",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "url": "https://www.dlr.de/++api++/@@rss?portal_type=News%20Item&research_domains=f8298f23cdb549f3a88533f9be9a73da&Language=de",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        -128
+      ],
+      "id": "7db2bac2-c207-4cb0-a2c0-d0cd1f1542ff",
+      "name": "RSS Read1"
+    },
+    {
+      "parameters": {
+        "url": "https://www.dlr.de/++api++/@@rss?portal_type=News%20Item&research_domains=0a65b8491e3447dba8e36e1fa48ce5e0&Language=de",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        48
+      ],
+      "id": "3aba3086-be39-41a3-979b-45c84034f4ff",
+      "name": "RSS Read2"
+    },
+    {
+      "parameters": {
+        "url": "https://www.dlr.de/++api++/@@rss?portal_type=News%20Item&research_domains=807701e3af15477599eb38800b5d18d6&Language=de",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        224
+      ],
+      "id": "ad6bc8a0-3f0e-4be9-8f9d-0eb1d99d2fd3",
+      "name": "RSS Read3"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Qz8BX_mwNeXcOYXvbZNNZRswFgpdWAx_NHC889u-VoA",
+          "mode": "list",
+          "cachedResultName": "RSS-F-Projekt",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Qz8BX_mwNeXcOYXvbZNNZRswFgpdWAx_NHC889u-VoA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "RSS-F-Projekte",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Qz8BX_mwNeXcOYXvbZNNZRswFgpdWAx_NHC889u-VoA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ $json.title }}",
+            "link": "={{ $json.link }}",
+            "pubDate": "={{ $json.pubDate }}",
+            "content": "={{ $json.content }}",
+            "contentSnippet": "={{ $json.contentSnippet }}",
+            "isoDate": "={{ $json.isoDate }}"
+          },
+          "matchingColumns": [
+            "title"
+          ],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pubDate",
+              "displayName": "pubDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contentSnippet",
+              "displayName": "contentSnippet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "isoDate",
+              "displayName": "isoDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -80,
+        -64
+      ],
+      "id": "6802bc20-953a-48a9-afb1-35a4d2e7b3b4",
+      "name": "Append or update row in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xAocnzaPqnShbSvM",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "RSS Read1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Read3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read3": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read2": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet4": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "09e016c3-aec2-439d-a7e0-cdae9d239804",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "af4d9a79fed7d464e6cf8f923e73d4ca13999fb32448e07914990656270c60af"
+  },
+  "nodeGroups": [],
+  "id": "4ULQFu5dhrdUIgng",
+  "tags": []
+}
